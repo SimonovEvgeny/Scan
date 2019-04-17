@@ -6,23 +6,27 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileVisitorRunnuble implements java.lang.Runnable {
+public class FileVisitorCallable implements Callable<List<String>> {
 
     private Path path;
-    private FileVisitor<Path> fileVisitor;
+    private FileVisitorImpl<Path> fileVisitor;
     private Logger logger = MyLogger.getInstance(FileVisitorRunnuble.class);
 
 
-    FileVisitorRunnuble(Path path, FileVisitor<Path> fileVisitor) {
+
+    FileVisitorCallable(Path path, FileVisitorImpl<Path> fileVisitor) {
         this.fileVisitor = fileVisitor;
         this.path = path;
     }
 
+
     @Override
-    public void run() {
+    public List<String> call() throws Exception {
         try {
             Files.walkFileTree(path, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
                     Integer.MAX_VALUE, fileVisitor);
@@ -30,5 +34,6 @@ public class FileVisitorRunnuble implements java.lang.Runnable {
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.getMessage());
         }
+        return fileVisitor.getList();
     }
 }

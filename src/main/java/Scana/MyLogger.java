@@ -6,8 +6,18 @@ import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 
 class MyLogger {
+private static File file = new File(new File("").getAbsolutePath() + "\\src\\main\\log\\scanLog.log");
+private static FileHandler fh;
 
-    private MyLogger(){
+static {
+    try {
+        fh = new FileHandler(file.getCanonicalPath());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+private MyLogger(){
     }
 
     static java.util.logging.Logger getInstance(Class clas){
@@ -15,12 +25,13 @@ class MyLogger {
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(clas.getName());
 
         try {
-            FileHandler fh = new FileHandler(new File("").getAbsolutePath() + "\\src\\main\\log\\scanLog.log");
+
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
+            logger.setUseParentHandlers(false);
 
-        } catch (SecurityException | IOException e) {
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
 
