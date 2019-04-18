@@ -1,6 +1,5 @@
 package Scana;
 
-
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.SimpleFileVisitor;
@@ -9,19 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 import static java.nio.file.FileVisitResult.*;
 
 public class FileVisitorImpl<Path>
         extends SimpleFileVisitor<Path> {
-    private String path;
-    private String size;
-    private String date;
 
     private final Logger myLogger = MyLogger.getInstance(FileVisitorImpl.class);
 
-    private List<String> list = new ArrayList<>();
+    private List<FileStateObject> list = new ArrayList<>();
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
@@ -31,12 +25,9 @@ public class FileVisitorImpl<Path>
     @Override
     public FileVisitResult visitFile(Path path, BasicFileAttributes attr) {
 
-        this.path = path.toString();
-        this.date = attr.creationTime().toString();
-        this.size = String.valueOf(attr.size());
-
-//        System.out.print(this.toString());
-        list.add(this.toString());
+        list.add(new FileStateObject(path.toString(),
+                attr.size(),
+                attr.creationTime().toString()));
 
         return CONTINUE;
     }
@@ -52,14 +43,7 @@ public class FileVisitorImpl<Path>
         return CONTINUE;
     }
 
-    @Override
-    public String toString() {
-        return "[ \nfile= " + this.path +
-                "\ndate= " + this.date +
-                "\nsize= " + this.size + "]";
-    }
-
-    List<String> getList(){
+    List<FileStateObject> getList(){
         return this.list;
     }
 }

@@ -2,7 +2,6 @@ package Scana;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
@@ -11,26 +10,22 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileVisitorCallable implements Callable<List<String>> {
+public class FileVisitorCallable implements Callable<List<FileStateObject>> {
 
     private Path path;
     private FileVisitorImpl<Path> fileVisitor;
-    private Logger logger = MyLogger.getInstance(FileVisitorRunnuble.class);
-
-
+    private Logger logger = MyLogger.getInstance(FileVisitorCallable.class);
 
     FileVisitorCallable(Path path, FileVisitorImpl<Path> fileVisitor) {
         this.fileVisitor = fileVisitor;
         this.path = path;
     }
 
-
     @Override
-    public List<String> call() throws Exception {
+    public List<FileStateObject> call() {
         try {
             Files.walkFileTree(path, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
                     Integer.MAX_VALUE, fileVisitor);
-
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.getMessage());
         }
