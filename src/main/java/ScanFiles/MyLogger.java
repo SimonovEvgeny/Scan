@@ -1,4 +1,4 @@
-package Scana;
+package ScanFiles;
 
 import java.io.File;
 import java.io.IOException;

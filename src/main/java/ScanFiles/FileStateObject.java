@@ -1,5 +1,8 @@
-package Scana;
+package ScanFiles;
 
+/**
+ *
+ */
 class FileStateObject {
     private String path;
     private long size;
@@ -8,7 +11,8 @@ class FileStateObject {
     FileStateObject(String path, long size, String date) {
         this.path = path;
         this.size = size;
-        this.date = date;
+        date = date.substring(0,10);
+        this.date = date.replaceAll("-",".");
     }
 
     @Override

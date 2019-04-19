@@ -1,4 +1,4 @@
-package Scana;
+package ScanFiles;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -12,19 +12,24 @@ import java.util.logging.Logger;
 
 public class FileVisitorCallable implements Callable<List<FileStateObject>> {
 
-    private Path path;
+    private Path pathFolder;
     private FileVisitorImpl<Path> fileVisitor;
     private Logger logger = MyLogger.getInstance(FileVisitorCallable.class);
 
-    FileVisitorCallable(Path path, FileVisitorImpl<Path> fileVisitor) {
+    FileVisitorCallable(Path pathFolder, FileVisitorImpl<Path> fileVisitor) {
+        if(pathFolder==null||fileVisitor==null)throw new IllegalArgumentException();
         this.fileVisitor = fileVisitor;
-        this.path = path;
+        this.pathFolder = pathFolder;
     }
 
+    /**
+     *
+     * @return List<FileStateObject>
+     */
     @Override
     public List<FileStateObject> call() {
         try {
-            Files.walkFileTree(path, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
+            Files.walkFileTree(pathFolder, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
                     Integer.MAX_VALUE, fileVisitor);
         } catch (IOException e) {
             logger.log(Level.SEVERE,e.getMessage());

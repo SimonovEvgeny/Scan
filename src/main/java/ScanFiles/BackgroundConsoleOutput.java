@@ -1,4 +1,4 @@
-package Scana;
+package ScanFiles;
 
 public class BackgroundConsoleOutput implements java.lang.Runnable {
     private int counter = 0;

@@ -1,4 +1,4 @@
-package Scana;
+package ScanFiles;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
