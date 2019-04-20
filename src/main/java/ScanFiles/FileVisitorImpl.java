@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static java.nio.file.FileVisitResult.*;
 
-public class FileVisitorImpl<Path>
-        extends SimpleFileVisitor<Path> {
+public class FileVisitorImpl<Path> extends SimpleFileVisitor<Path> {
 
-    private final Logger myLogger = MyLogger.getInstance(FileVisitorImpl.class);
+    private final Logger myLogger = ScanLogger.getLogger(FileVisitorImpl.class);
 
     private List<FileStateObject> list = new ArrayList<>();
 
@@ -39,11 +39,11 @@ public class FileVisitorImpl<Path>
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) {
-        myLogger.log(Level.SEVERE,"", exc);
+        myLogger.log(Level.SEVERE, "", exc);
         return CONTINUE;
     }
 
-    List<FileStateObject> getList(){
+    List<FileStateObject> getList() {
         return this.list;
     }
 }

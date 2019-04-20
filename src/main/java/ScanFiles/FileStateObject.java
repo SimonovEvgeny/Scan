@@ -1,7 +1,7 @@
 package ScanFiles;
 
 /**
- *
+ * Класс свойств файла
  */
 class FileStateObject {
     private String path;
@@ -11,8 +11,8 @@ class FileStateObject {
     FileStateObject(String path, long size, String date) {
         this.path = path;
         this.size = size;
-        date = date.substring(0,10);
-        this.date = date.replaceAll("-",".");
+        date = date.substring(0, 10); //форматирование полученной даты согласно трбованиям задания
+        this.date = date.replaceAll("-", ".");
     }
 
     @Override

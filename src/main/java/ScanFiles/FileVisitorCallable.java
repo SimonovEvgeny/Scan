@@ -14,16 +14,15 @@ public class FileVisitorCallable implements Callable<List<FileStateObject>> {
 
     private Path pathFolder;
     private FileVisitorImpl<Path> fileVisitor;
-    private Logger logger = MyLogger.getInstance(FileVisitorCallable.class);
+    private Logger logger = ScanLogger.getLogger(FileVisitorCallable.class);
 
     FileVisitorCallable(Path pathFolder, FileVisitorImpl<Path> fileVisitor) {
-        if(pathFolder==null||fileVisitor==null)throw new IllegalArgumentException();
+        if (pathFolder == null || fileVisitor == null) throw new NullPointerException();
         this.fileVisitor = fileVisitor;
         this.pathFolder = pathFolder;
     }
 
     /**
-     *
      * @return List<FileStateObject>
      */
     @Override
@@ -32,7 +31,7 @@ public class FileVisitorCallable implements Callable<List<FileStateObject>> {
             Files.walkFileTree(pathFolder, EnumSet.of(FileVisitOption.FOLLOW_LINKS),
                     Integer.MAX_VALUE, fileVisitor);
         } catch (IOException e) {
-            logger.log(Level.SEVERE,e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
         return fileVisitor.getList();
     }
