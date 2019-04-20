@@ -22,14 +22,14 @@ public class FileVisitorCallableTest {
 
     @Test
     public void testCorrectResultCall() throws IOException {
-        File file = new File(new File("").getAbsolutePath()+"\\src\\test\\log\\scanLog.log");
+        File file = new File(new File("").getAbsolutePath()+"\\src\\test\\result\\testFileWriterResult.txt");
         BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
         List<String> expectedStrings = Arrays.asList(
                 "file= " + file.getAbsolutePath() ,
                 "date= " + attr.lastModifiedTime().toString().substring(0,10).replaceAll("-","."),
                 "size= " + attr.size());
 
-        FileVisitorCallable fileVisitorCallable = new FileVisitorCallable(Paths.get(new File("").getAbsolutePath()+"\\src\\test\\log\\"),
+        FileVisitorCallable fileVisitorCallable = new FileVisitorCallable(Paths.get(new File("").getAbsolutePath()+"\\src\\test\\result\\"),
                 new FileVisitorImpl<>());
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<List<FileStateObject>> future = executorService.submit(fileVisitorCallable);
